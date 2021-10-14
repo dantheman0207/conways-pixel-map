@@ -56,7 +56,15 @@ export function distance(x1: number, y1: number, x2: number, y2: number): number
     return Math.abs(x1-x2) + Math.abs(y1-y2);
 }
 
-const bitMaps = readInput();
-const result = processInput(bitMaps);
+const bitMaps: State[][][] = readInput();
+const result: string = processInput(bitMaps)
+                        .map((bitMap: number[][]): string => 
+                            // Make each row a string of numbers separated by spaces
+                            bitMap.map((row: number[]): string => row.join(' '))
+                                // Then join each row as a grid
+                                .join('\n')
+                        )
+                        // Join each bitmap with a line between
+                        .join('\n\n');
 
 console.log(result);
