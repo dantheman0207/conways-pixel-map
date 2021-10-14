@@ -4,7 +4,8 @@
   "description": "Take Home Test",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/**/*.test.js"
+    "build": "tsc",
+    "start": "node index.js"
   },
   "author": "Daniel Ransom",
   "license": "ISC",
