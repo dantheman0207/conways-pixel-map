@@ -22,7 +22,7 @@ function readInput(): State[][][] {
     return bitMaps;
 }
 
-export function processInput(bitMaps: State[][][]): number[][][] {
+function processInput(bitMaps: State[][][]): number[][][] {
     // Create 2D array initialized to Infinity for each test case
     let result: number[][][] = bitMaps.map((bitMap: State[][]): number[][] => {
         return bitMap.map((row: State[]): number[] => {
@@ -43,7 +43,7 @@ export function processInput(bitMaps: State[][][]): number[][][] {
     return result;
 }
 
-export function mutateNeighbors(bitMap: number[][], x: number, y: number): number[][] {
+function mutateNeighbors(bitMap: number[][], x: number, y: number): number[][] {
     bitMap[y][x] = 0;
     return bitMap.map((row: number[], j: number): number[] => {
         return row.map((_, i: number): number => {
@@ -52,7 +52,7 @@ export function mutateNeighbors(bitMap: number[][], x: number, y: number): numbe
     });
 }
 
-export function distance(x1: number, y1: number, x2: number, y2: number): number {
+function distance(x1: number, y1: number, x2: number, y2: number): number {
     return Math.abs(x1-x2) + Math.abs(y1-y2);
 }
 
