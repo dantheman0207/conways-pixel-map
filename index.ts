@@ -2,6 +2,12 @@ import readlineSync from 'readline-sync';
 
 enum State { 'Black' = 0, 'White' = 1 };
 
+// First we read input from stdin
+const bitmaps: State[][][] = readInput();
+// Process and then log output
+const result: string = processInput(bitmaps)
+console.log(result);
+
 // Read input from stdin
 function readInput(): State[][][] {
     const nrTestCases: number = +readlineSync.question('');
@@ -25,7 +31,7 @@ function readInput(): State[][][] {
 }
 
 // Given an array of bitmaps, process each and return array of processed bitmaps
-function processInput(bitmaps: State[][][]): number[][][] {
+function processInput(bitmaps: State[][][]): string {
     // Create 2D array initialized to Infinity for each bitmap
     let result: number[][][] = bitmaps.map((bitmap: State[][]): number[][] => {
         return bitmap.map((row: State[]): number[] => {
@@ -43,7 +49,16 @@ function processInput(bitmaps: State[][][]): number[][][] {
             })
         });
     });
-    return result;
+    return result
+        // Format output
+        .map((bitmap: number[][]): string => 
+            // Make each row a string of numbers separated by spaces
+            bitmap.map((row: number[]): string => row.join(' '))
+                // Then join each row as a grid
+                .join('\n')
+        )
+        // Join each bitmap with a line between
+        .join('\n\n');
 }
 
 // Given a white pixel, iterate over entire bitmap and update distance for each
@@ -61,16 +76,3 @@ function mutateNeighbors(bitmap: number[][], x: number, y: number): number[][] {
 function distance(x1: number, y1: number, x2: number, y2: number): number {
     return Math.abs(x1-x2) + Math.abs(y1-y2);
 }
-
-const bitmaps: State[][][] = readInput();
-const result: string = processInput(bitmaps)
-                        .map((bitmap: number[][]): string => 
-                            // Make each row a string of numbers separated by spaces
-                            bitmap.map((row: number[]): string => row.join(' '))
-                                // Then join each row as a grid
-                                .join('\n')
-                        )
-                        // Join each bitmap with a line between
-                        .join('\n\n');
-
-console.log(result);
