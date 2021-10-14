@@ -2,37 +2,39 @@ var readlineSync = require('readline-sync');
 
 enum State { 'Black' = 0, 'White' = 1 };
 
+// Read input from stdin
 function readInput(): State[][][] {
     const nrTestCases: number = +readlineSync.question('');
-    let bitMaps: State[][][] = [];
+    let bitmaps: State[][][] = [];
     for (let j: number = 0; j < nrTestCases; j++) {
         const [ nrRows ]: [ nrRows: number ] = readlineSync.question('')
                                 .split(' ')
                                 .map((a: string): number => +a);
-        let bitMap: State[][] = [];
+        let bitmap: State[][] = [];
         for(let i: number = 0; i < nrRows; i++) {
             let newLine: State[] = readlineSync.question('')
                             .split('')
                             .map((a: string): State => +a);
-            bitMap.push(newLine);
+            bitmap.push(newLine);
         }
-        bitMaps.push(bitMap);
+        bitmaps.push(bitmap);
         readlineSync.question('');
     }
-    return bitMaps;
+    return bitmaps;
 }
 
-function processInput(bitMaps: State[][][]): number[][][] {
-    // Create 2D array initialized to Infinity for each test case
-    let result: number[][][] = bitMaps.map((bitMap: State[][]): number[][] => {
-        return bitMap.map((row: State[]): number[] => {
+// Given an array of bitmaps, process each and return array of processed bitmaps
+function processInput(bitmaps: State[][][]): number[][][] {
+    // Create 2D array initialized to Infinity for each bitmap
+    let result: number[][][] = bitmaps.map((bitmap: State[][]): number[][] => {
+        return bitmap.map((row: State[]): number[] => {
             return row.map((state: State): number => Infinity);
         })
     });
 
     // For each white pixel run our update function
-    bitMaps.forEach((bitMap: State[][], testCase: number) => {
-        bitMap.forEach((row: State[], y: number) => {
+    bitmaps.forEach((bitmap: State[][], testCase: number) => {
+        bitmap.forEach((row: State[], y: number) => {
             row.forEach((state: State, x: number) => {
                 if(state == State['White']) {
                     result[testCase] = mutateNeighbors(result[testCase], x, y);
@@ -43,24 +45,27 @@ function processInput(bitMaps: State[][][]): number[][][] {
     return result;
 }
 
-function mutateNeighbors(bitMap: number[][], x: number, y: number): number[][] {
-    bitMap[y][x] = 0;
-    return bitMap.map((row: number[], j: number): number[] => {
-        return row.map((_, i: number): number => {
-            return Math.min(bitMap[j][i], distance(x,y,i,j));
+// Given a white pixel, iterate over entire bitmap and update distance for each
+//  pixel (if new distance is shorter than previous)
+function mutateNeighbors(bitmap: number[][], x: number, y: number): number[][] {
+    bitmap[y][x] = 0;
+    return bitmap.map((row: number[], j: number): number[] => {
+        return row.map((current: number, i: number): number => {
+            return Math.min(current, distance(x,y,i,j));
         })
     });
 }
 
+// Calculate distance between two pixels
 function distance(x1: number, y1: number, x2: number, y2: number): number {
     return Math.abs(x1-x2) + Math.abs(y1-y2);
 }
 
-const bitMaps: State[][][] = readInput();
-const result: string = processInput(bitMaps)
-                        .map((bitMap: number[][]): string => 
+const bitmaps: State[][][] = readInput();
+const result: string = processInput(bitmaps)
+                        .map((bitmap: number[][]): string => 
                             // Make each row a string of numbers separated by spaces
-                            bitMap.map((row: number[]): string => row.join(' '))
+                            bitmap.map((row: number[]): string => row.join(' '))
                                 // Then join each row as a grid
                                 .join('\n')
                         )
