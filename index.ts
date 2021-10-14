@@ -6,13 +6,13 @@ enum State { 'Black' = 0, 'White' = 1 };
 function readInput(): State[][][] {
     const nrTestCases: number = +readlineSync.question('');
     let bitmaps: State[][][] = [];
-    for (let j: number = 0; j < nrTestCases; j++) {
+    for (const j: number = 0; j < nrTestCases; j++) {
         const [ nrRows ]: [ nrRows: number ] = readlineSync.question('')
                                 .split(' ')
                                 .map((a: string): number => +a);
         let bitmap: State[][] = [];
-        for(let i: number = 0; i < nrRows; i++) {
-            let newLine: State[] = readlineSync.question('')
+        for(const i: number = 0; i < nrRows; i++) {
+            const newLine: State[] = readlineSync.question('')
                             .split('')
                             .map((a: string): State => +a);
             bitmap.push(newLine);
