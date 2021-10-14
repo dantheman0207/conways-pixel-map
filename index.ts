@@ -1,4 +1,4 @@
-var readlineSync = require('readline-sync');
+import readlineSync from 'readline-sync';
 
 enum State { 'Black' = 0, 'White' = 1 };
 
@@ -6,12 +6,13 @@ enum State { 'Black' = 0, 'White' = 1 };
 function readInput(): State[][][] {
     const nrTestCases: number = +readlineSync.question('');
     let bitmaps: State[][][] = [];
-    for (const j: number = 0; j < nrTestCases; j++) {
-        const [ nrRows ]: [ nrRows: number ] = readlineSync.question('')
+    for (let j: number = 0; j < nrTestCases; j++) {
+        // @ts-ignore this is unfortunately regarded as an error by TS despite being valid
+        const [ nrRows = 0 ]: [ nrRows: number ] = readlineSync.question('')
                                 .split(' ')
                                 .map((a: string): number => +a);
         let bitmap: State[][] = [];
-        for(const i: number = 0; i < nrRows; i++) {
+        for(let i: number = 0; i < nrRows; i++) {
             const newLine: State[] = readlineSync.question('')
                             .split('')
                             .map((a: string): State => +a);
